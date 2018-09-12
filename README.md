@@ -68,3 +68,46 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 ```
 This will configure our paths for our Static files (CSS, JavaScript, images, etc) as well as the path to our template files. 
 Lastly, we’ll need to register your application (named 'app') under the INSTALLED_APPS section.
+
+We’ll now move onto configuring a basic URL.
+
+## Step 3: First View
+As mentioned earlier, URLs map to functions in your views.py which in turn will pass data to a template. Within app/views.py:
+```python
+# views.py
+from django.shortcuts import render, HttpResponse
+import requests
+
+# Create your views here.
+
+# ./index
+def index(request):
+	return HttpResponse('Step 3. index view!')
+	
+# ./test
+def test(request):
+	return HttpResponse('Step 3. test view!')
+```
+In order to map urls to our view methods, we’ll need to configure them. Within our root URLs file within the demonstration folder, we’ll configure our urls to be proceeded by app/:
+```python
+from django.contrib import admin
+from django.urls import path
+from django.conf.urls import include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+	path('app/', include('app.urls')),
+]
+```
+Now, our URLs may be accessed as http://127.0.0.1:8000/app/<view url>. We’ll now create a new urls.py file within app/ like that:
+```python
+# app/urls.py
+from django.conf.urls import url
+from app import views
+
+urlpatterns = [
+	url('^$', views.index, name='index'),
+	url('test/', views.test, name='test')
+]
+```
+If we navigate to http://127.0.0.1:8000/app/test/, we should see the text “Step 3. test view!”.
