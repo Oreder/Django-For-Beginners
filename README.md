@@ -47,3 +47,16 @@ Let’s go ahead and fix that. You can stop the server using Ctrl + C. Go ahead 
 $ python manage.py migrate
 ```
 This command will build all of the default database tables that Django needs for built-in services such as user authentication. Once again, we’ll run the server, then navigate to http://127.0.0.1:8000/. Now it worked!
+
+## Step 2: Creating our application
+```sh
+$ python manage.py startapp app
+```
+Breaking down these files:
++ app/admin.py: Allows us to register our models to view on the Django Admin Site.
++ app/migrations: Keeps track of our migrations which are essentially Django’s way of propagating changes that are made to our models.
++ app/models.py: Stores our representations of objects which will be stored in our database.
++ app/tests.py: Our unit tests will live here. Although Django calls these tests “unit tests”, they’re actually closer to integration tests.
++ app/views.py: All of our views will live here, which are mapped to URLs.
+
+With that, we’ve successfully generated our project scaffold.
