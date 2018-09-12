@@ -59,4 +59,12 @@ Breaking down these files:
 + app/tests.py: Our unit tests will live here. Although Django calls these tests “unit tests”, they’re actually closer to integration tests.
 + app/views.py: All of our views will live here, which are mapped to URLs.
 
-With that, we’ve successfully generated our project scaffold.
+With that, we’ve successfully generated our project scaffold. Before moving on, we’ll configure our Settings.py while which will be important going forward.
+
+**Configuring Settings.py**
+Settings.py contains various configuration options available, such as changing our database and so much more. For this project, we’ll need to add the following lines anywhere in this file:
+```
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+```
+This will configure our paths for our Static files (CSS, JavaScript, images, etc) as well as the path to our template files. 
+Lastly, we’ll need to register your application (named 'app') under the INSTALLED_APPS section.
