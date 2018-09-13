@@ -111,3 +111,11 @@ urlpatterns = [
 ]
 ```
 If we navigate to http://127.0.0.1:8000/app/test/, we should see the text “Step 3. test view!”.
+Alright, we’ve been making some toy views, but how about we move onto displaying some meaningful data to the user? In particular, we’ll display the Github profile information for a given user.
+
+## Step 4: Integrating the Github API
+The Github API contains a collection of URLs which a developer can query using HTTP methods to retrieve data, in the form of JSON. In order to leverage this API, we’ll use the Python Requests library which will make this process simple. From the API for users, we can get profile information by using the following URL:
+```
+https://api.github.com/users/:user
+```
+Let’s go ahead and wire this up in Django. As an exercise, try to create the urls and view method before moving forward. Finally, navigating to http://127.0.0.1:8000/app/profile, at the moment the output is all the values with JSON types that we are interested in displaying to the user.
