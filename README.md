@@ -119,3 +119,53 @@ The Github API contains a collection of URLs which a developer can query using H
 https://api.github.com/users/:user
 ```
 Let’s go ahead and wire this up in Django. As an exercise, try to create the urls and view method before moving forward. Finally, navigating to http://127.0.0.1:8000/app/profile, at the moment the output is all the values with JSON types that we are interested in displaying to the user.
+
+**Bower**
+Bower is a front-end dependency manager for your project. In laymans terms, it is a command-line program which you can utilize to download libraries such as Twitter Bootstrap. The beauty of this approach is that we can generate a bower.json file, which any user can copy and use to download a bunch of packages easily - as opposed to going to each site, and manually copy/pasting/saving out files.
+
+In this step, I’ll walk you through downloading Twitter bootstrap as well as generating your own bower.json. Before we do this, we’ll create a .bowerrc file.
+
+In the same directory as manage.py, create a .bowerrc file with the following content:
+```json
+{
+    "directory": "app/static/"
+}
+```
+Anytime we run bower, it will output the downloaded files within the directory listed here. And now in our command line, we can simply run:
+```bash
+$ npm install -g bower
+$ bower init
+$ bower install bootstrap
+$ bower install jquery
+```
+This will download Twitter Bootstrap into our project directory, as specified within our .bowerrc file.
+
+## Step 5: Templating
+Templates in Django are essentially HTML files which we pass in a context which then renders our data to the user. Before we can create our first template, we’ll need to create some folders. In the same directory as your  app/views.py:
+```sh
+$ mkdir templates
+$ mkdir templates/app
+$ cd templates/app
+```
+Within our templates/app folder, we’ll create our profile.html. Most of this is just Bootstrap classes for styling, but there is one important syntax to observe here:
+```html
+{% for key in data %}
+{% endfor %
+```
+This syntax allows us to iterate over a data structure using a for loop, which should look familiar. Within this for loop, we do the following:
+```html
+    {{ key.name }}
+    {{ key.blog }}
+    {{ key.public_repos }}
+    ...
+```
+In this case, data is an array of dictionaries, in which each dictionary has the name, blog, and public_repos keys (and a few others, listed in the above snippet for brevity). Here we access these properties and display them using the double curly braces syntax, which are template varaible placeholders which will take on the value of the expression within.
+
+Apply method render for profile view:
+```python
+def profile(request):
+    ...
+    return render(request, './app/profile.html', {'data': parsedData})
+```
+
+With this new template in hand, let’s reload our profile page. Awesome, we’ve got a nice layout. As of now, our view method is essentially hardcoded - we can’t query any particular user’s Github information. We’ll need to come up with a way to ask the user for an input, and to do this we’ll move onto forms.

@@ -1,0 +1,21 @@
+{
+  "name": "django",
+  "homepage": "https://github.com/Oreder/Django-For-Beginners",
+  "authors": [
+    "Oreder <stepup.ored@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/static/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.1.3"
+  }
+}

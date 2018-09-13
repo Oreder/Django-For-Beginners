@@ -24,6 +24,7 @@ def profile(request):
 		userData['avatar_url'] = data['avatar_url']
 		userData['followers'] = data['followers']
 		userData['following'] = data['following']
+		userData['location'] = data['location']
 		parsedData.append(userData)
 		
-	return HttpResponse(parsedData)
+	return render(request, './app/profile.html', {'data': parsedData})
