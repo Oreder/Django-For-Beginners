@@ -1,4 +1,4 @@
-# Django-For-Beginners
+# Django-For-Beginners [![Build Status](https://travis-ci.org/Oreder/Django-For-Beginners.svg?branch=master)](https://travis-ci.org/Oreder/Django-For-Beginners)
 A project-based approach to learning web development with the Django web framework
 
 ## Step 0: Installation
