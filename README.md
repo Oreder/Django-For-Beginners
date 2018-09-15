@@ -169,3 +169,60 @@ def profile(request):
 ```
 
 With this new template in hand, let’s reload our profile page. Awesome, we’ve got a nice layout. As of now, our view method is essentially hardcoded - we can’t query any particular user’s Github information. We’ll need to come up with a way to ask the user for an input, and to do this we’ll move onto forms.
+
+## Step 6: Forms
+Forms are the bread and butter of web applications - every web programmer will come across them at one point or another. Forms essentially allow users to interact with your web application through various fields for input, usually for registration pages or in our case, performing a query.
+To begin, we’ll go ahead and build our form within our profile.html:
+```html
+<style>
+    .form-signin {
+        max-width: 550px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+</style>
+
+<div class="container text-center">
+	<form class="form-signin" id="login_form" method="post">
+		<!-- protect against any cross site forgery attacks -->
+		{% csrf_token %}
+		
+		<br>
+		<!-- required autofocus: make a blue border around the form field when user has clicked to type -->
+		<input type="text" name="user" class="form-control" placeholder="Github User Name, e.g: Oreder" value="" required autofocus />
+		<br>
+		<button class="btn" btn-lg btn-primary btn-block" type="submit">Get Data</button>
+	</form>
+</div>
+```
+Look at the input field, the most important attribute to pay attention to is name=user. This name parameter will have it’s value user sent as a POST parameter once the user submits the form, which we’ll get into shortly.
+
+The last bit for our form is the actual submission, which will be a button, where here we provide attributes specifying the bootstrap styling class btn btn-lg btn-primary btn-block, as well as the type of action to perform when this button is clicked (in this case, a submit action.) Once this button is clicked, the form will be submitted and the values from it’s form fields (here we only have one form field) will be sent as a POST request to the corresponding URL set earlier.
+
+## Step 7: Capturing POST parameters
+As mentioned, performing a POST request will send parameters that can be accessed programmatically. Let’s modify our profilemethod within app/views.py to access the user value that was passed through our form submission:
+```python
+def profile(request):
+	parsedData = []
+	if request.method == 'POST':
+		user = request.POST.get('user')
+		jsonList = []
+		req = requests.get('https://api.github.com/users/' + user)
+		jsonList.append(json.loads(req.content))
+		
+		userData = {}
+		for data in jsonList:
+			userData['name'] = data['name']
+			userData['blog'] = data['blog']
+			userData['public_gists'] = data['public_gists']
+			userData['public_repos'] = data['public_repos']
+			userData['avatar_url'] = data['avatar_url']
+			userData['followers'] = data['followers']
+			userData['following'] = data['following']
+			userData['location'] = data['location']
+		
+			parsedData.append(userData)
+			
+	return render(request, './app/profile.html', {'data': parsedData})
+```
+Likewise, we could write additional logic to handle cases for GET, UPDATE, and DELETE requests here based on the type of request we specified in our form.

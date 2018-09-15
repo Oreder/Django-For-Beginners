@@ -11,20 +11,24 @@ def index(request):
 	
 # ./profile
 def profile(request):
-	jsonList = []
-	req = requests.get('https://api.github.com/users/Oreder')
-	jsonList.append(json.loads(req.content))
 	parsedData = []
-	userData = {}
-	for data in jsonList:
-		userData['name'] = data['name']
-		userData['blog'] = data['blog']
-		userData['public_gists'] = data['public_gists']
-		userData['public_repos'] = data['public_repos']
-		userData['avatar_url'] = data['avatar_url']
-		userData['followers'] = data['followers']
-		userData['following'] = data['following']
-		userData['location'] = data['location']
-		parsedData.append(userData)
+	if request.method == 'POST':
+		user = request.POST.get('user')
+		jsonList = []
+		req = requests.get('https://api.github.com/users/' + user)
+		jsonList.append(json.loads(req.content))
 		
+		userData = {}
+		for data in jsonList:
+			userData['name'] = data['name']
+			userData['blog'] = data['blog']
+			userData['public_gists'] = data['public_gists']
+			userData['public_repos'] = data['public_repos']
+			userData['avatar_url'] = data['avatar_url']
+			userData['followers'] = data['followers']
+			userData['following'] = data['following']
+			userData['location'] = data['location']
+		
+			parsedData.append(userData)
+			
 	return render(request, './app/profile.html', {'data': parsedData})
