@@ -1,7 +1,6 @@
 # views.py
 from django.shortcuts import render, HttpResponse
 import requests
-import json
 
 # Create your views here.
 
@@ -14,9 +13,10 @@ def profile(request):
 	parsedData = []
 	if request.method == 'POST':
 		user = request.POST.get('user')
-		jsonList = []
 		req = requests.get('https://api.github.com/users/' + user)
-		jsonList.append(json.loads(req.content))
+		
+		jsonList = []
+		jsonList.append(req.json())
 		
 		userData = {}
 		for data in jsonList:
